@@ -130,8 +130,6 @@ float: right;
   margin: 20px 2px;
   /* width: 100%; */
 
-
-
 }
 
 .annotationField{
@@ -139,6 +137,29 @@ float: right;
   margin-left: auto;
   margin-right: auto;
 }
+
+.audio-list .audioName{
+  margin: 7px;
+}
+
+
+
+.audioBox{
+  width: 65%;
+  background-color: #5c584c;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.audioBox i{
+  margin-left: 60px;
+  margin-bottom: 10px;
+}
+
+
 
 #comments{
   width: 92%;
