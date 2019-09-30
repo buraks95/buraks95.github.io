@@ -34,13 +34,15 @@
 
              <div class="annotationField">
              <div class="annotationInput">
-               <p id="timeOutput">Zeit auswählen.</p>
+               <p id="timeOutput">Zeit auswählen</p>
                <input id="annotation" type="annotation" placeholder="Anmerkung" name="annotation" size="40" maxlength="1000">
-               <button type="button" id = saveAnnotations class="saveAnnotation">Speichern</button>
+               <button type="button" id = "saveAnnotations" class="saveAnnotation">Speichern</button>
                <p id="anmerkungFail"></p>
              </div>
 
              </div>
+
+             <div id="divAudioList" class="audio-list"></div>
 
            </div>
          </div>
@@ -81,7 +83,7 @@
          </div>
 
 
-       <dialog role="dialog" aria-labelledby="dialog-heading">
+       <dialog id ="dialog" role="dialog" aria-labelledby="dialog-heading">
            <p id="dialog-text"></p>
            <button id="confirm-dialog">Aufnahme stoppen</button>
            <button id="close-dialog">Schließen</button>

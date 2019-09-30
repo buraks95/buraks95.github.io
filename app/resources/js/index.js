@@ -2,14 +2,17 @@ import AudioRecorder from "./AudioRecorder.js";
 import Dialog from "./Dialog.js";
 import AnnotationManager from "./Managers/AnnotationManager.js";
 import DownloadManager from "./Managers/DownloadManager.js";
+import ManageAudioList from './ManageAudioList.js';
 
 var audioRecorder,
  annotationSaverManager,
  annotationSaver,
  downloadStarter,
- downloadManager;
+ downloadManager,
+ audioList;
 
 function init() {
+	initAudioList();
 	initButtons();
 	initRecorder();
 	initTime();
@@ -27,21 +30,25 @@ function initDownload() {
 	downloadManager = new DownloadManager (downloadStarter);
 }
 
+function initAudioList() {
+	console.log("init Audio List");
+	audioList = new ManageAudioList();
+}
+
+
 function initRecorder() {
 	console.log("init recorder");
 	let audioElement = document.querySelector(".recorder");
-	audioRecorder = new AudioRecorder(audioElement, showAnnotationField);
+	audioRecorder = new AudioRecorder(audioElement, showAnnotationField, audioList);
 }
 
-// TODO: extract in view module or delete
+
 function showAnnotationField(){
-	console.log('bam bam');
 	annotationSaver.style.visibility = 'visible';
 }
 
 
 function initAnnotations() {
-	console.log("init annotations");
 	annotationSaver = document.querySelector(".annotationField");
 	annotationSaver.style.visibility = 'hidden';
 	annotationSaverManager = new AnnotationManager(annotationSaver);
@@ -55,7 +62,7 @@ function initDeleteRec(){
 
 function onDeleteButtonClicked(){
 	let dialog = new Dialog('Möchten sie die Aufnahme wirklich löschen?', 'Aufnahme löschen');
-		dialog.toggleDialog(refreshPage);
+	dialog.toggleDialog(refreshPage);
 }
 
 function refreshPage(){

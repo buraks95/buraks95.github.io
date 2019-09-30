@@ -1,9 +1,11 @@
 import { Event, Observable } from "./Observable.js";
 import Dialog from "./Dialog.js";
+import RecorderView from "./RecorderView.js";
 
 
 function initRecorder(recorder){
   initControls(recorder);
+  initView(recorder);
   if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
    console.log('getUserMedia supported.');
    navigator.mediaDevices.getUserMedia (
@@ -23,46 +25,53 @@ function initRecorder(recorder){
   }
 }
 
-//To-Do: show stop and pause button only when recording
+
 function initControls(recorder){
   recorder.controls = {
     stopButton: recorder.el.querySelector(".button.stop"),
     pauseButton: recorder.el.querySelector(".button.pause"),
     recordBox: recorder.el.querySelector(".recordBox"),
-    //playButton: recorder.el.querySelector(".button.play")
   };
-  recorder.controls.stopButton.style.visibility='hidden';
-  recorder.controls.pauseButton.style.visibility='hidden';
-
-
+  recorder.controls.stopButton.style.visibility = 'hidden';
+  recorder.controls.pauseButton.style.visibility = 'hidden';
 
 }
 
-function initEvents(recorder, showAnnotationField) {
+function initView(recorder){
+  recorder.recorderView = new RecorderView(recorder.controls);
+}
+
+function initEvents(recorder) {
   recorder.controls.stopButton.addEventListener("click", recorder.onStopButtonClicked.bind(recorder));
   recorder.controls.pauseButton.addEventListener("click", recorder.onPauseButtonClicked.bind(recorder));
   recorder.controls.recordBox.addEventListener("click", recorder.startRecording.bind(recorder));
   //recorder.controls.playButton.addEventListener("click", recorder.playButton.bind(recorder));
+
 }
 
 class AudioRecorder extends Observable{
-  constructor(el, showAnnotationField) {
+  constructor(el, showAnnotationField, audioList) {
     super();
     this.el = el;
+    this.audioList = audioList;
     console.log(showAnnotationField);
     this.showAnnotationField = showAnnotationField;
     initRecorder(this);
   }
 
 
-//To-Do: animated circle
   startRecording(){
-    console.log("Aufnahme starten");
-  	 if(!this.controls.recordBox.classList.contains('recording')){
-  		 this.controls.recordBox.classList.add('recording');
-       this.controls.stopButton.style.visibility='visible';
-       this.controls.pauseButton.style.visibility='visible';
-  	 }
+    if (recordedAudio.src) {
+      this.audioList.add(recordedAudio.src); // Add current recording to Audio list.
+      this.showAnnotationField(false);
+      recordedAudio.style.visibility = 'hidden';
+    }
+    if (!this.controls.recordBox.classList.contains('recording')) {
+      this.controls.recordBox.classList.add('recording');
+      this.controls.stopButton.style.visibility = 'visible';
+      this.controls.pauseButton.style.visibility = 'visible';
+    }
+    this.recorderView.onRecordingStarted();
 
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(stream => {
@@ -85,67 +94,42 @@ class AudioRecorder extends Observable{
       const audioBlob = new Blob(audioChunks,  { 'type' : 'audio/mpeg;' });
       const audioUrl = URL.createObjectURL(audioBlob);
       const audio = new Audio(audioUrl);
+      recordedAudio.style.visibility = 'visible';
       recordedAudio.src = URL.createObjectURL(audioBlob);
       recordedAudio.controls=true;
       recordedAudio.autoplay=false;
+      //this.recorderView.onRecordingStoped(this.showAnnotationField);
       if(this.controls.recordBox.classList.contains('recording')|| this.controls.pauseButton.classList.contains('paused')){
         this.controls.recordBox.classList.remove('recording');
-        this.controls.pauseButton.parentNode.removeChild(this.controls.pauseButton);
-        this.controls.stopButton.parentNode.removeChild(this.controls.stopButton);
+        this.controls.stopButton.style.visibility = 'hidden';
+        this.controls.pauseButton.style.visibility = 'hidden';
         // console.log(this.controls.pauseButton.parentNode);
         // this.mediaRecorder.stop();
         this.showAnnotationField();
-        this.controls.recordBox.style.pointerEvents = 'none';
       }
-
-      //audio.play();
     });
-
   }
 
-//To-Do: diable pause button when stop button is clicked
   onStopButtonClicked() {
-    console.log(this);
-    if(this.controls.recordBox.classList.contains('recording') || this.controls.pauseButton.classList.contains('paused')){
+      if(this.controls.recordBox.classList.contains('recording') || this.controls.pauseButton.classList.contains('paused')){
       let dialog = new Dialog('Möchten sie die Aufnahme wirklich stoppen?', 'Aufnahme stoppen');
       dialog.toggleDialog(this.stopRecording.bind(this));
-    }
   }
+
+}
 
   stopRecording(){
     this.mediaRecorder.stop();
   }
 
-//To-Do: outsource layout code
   onPauseButtonClicked() {
-    console.log("pause button clicked");
-    if(this.controls.recordBox.classList.contains('recording')){
-      this.controls.recordBox.classList.remove('recording');
-      if(!this.controls.pauseButton.classList.contains('paused')){
-        console.log(this.controls.pauseButton);
-        this.changeIcon(this.controls.pauseButton);
-        this.controls.pauseButton.classList.add('paused');
-        this.mediaRecorder.pause();
-      }
+    this.recorderView.onPauseButtonClicked();
+    //this.mediaRecorder.pause(), this.mediaRecorder.resume()
 
-
-    } else if(!this.controls.recordBox.classList.contains('recording')){
-        this.controls.recordBox.classList.add('recording');
-        if(this.controls.pauseButton.classList.contains('paused')){
-          this.changeIcon(this.controls.pauseButton);
-          this.controls.pauseButton.classList.remove('paused');
-          this.mediaRecorder.resume();
-        }
-    }
   }
 
-  changeIcon(pauseButton){
-    console.log(pauseButton);
-    if(pauseButton.className=="far fa-pause-circle fa-5x pause button"){
-      pauseButton.className = "fas fa-microphone-slash fa-5x pause button paused";
-    }else{
-      pauseButton.className = "far fa-pause-circle fa-5x pause button";
-    }
-  }
+
 }
+export {AudioRecorder};
+
 export default AudioRecorder;

@@ -1,9 +1,9 @@
 import { Event, Observable } from "../Observable.js";
 
 var annoText="";
-var allAnnos =[""];
+//var allAnnos =[""];
 var currentT = "";
-document.getElementById("comments").innerHTML = allAnnos.join("\r\n");
+//document.getElementById("comments").innerHTML = allAnnos.join("\r\n");
 
 window.onload = function(){
   var audio = [...document.getElementsByTagName('audio')];
@@ -16,19 +16,21 @@ window.onload = function(){
       secs = '0' + String(secs);
     }
     if(hours >= 1){
-      currentT = hours + ':' + mins + ':' + secs;
+      currentT = hours + ':' + mins + ':' + secs + ' hrs';
     } else {
-      currentT = mins + ':' + secs;
+      currentT = mins + ':' + secs + ' mins';
     }
     document.getElementById('timeOutput').innerHTML = "Time "+currentT;
   }))
 }
 
 function initAnnotationManager(annotationField){
-  annotationField.annotationInput = {
-  annotationButton: annotationField.el.querySelector(".saveAnnotation")
+  annotationField.elements = {
+  annotationButton: annotationField.el.querySelector(".saveAnnotation"),
+  annotationContent: annotationField.el.querySelector("#annotation"),
+  annotationFail: annotationField.el.querySelector("#anmerkungFail"),
   }
-  annotationField.annotationInput.annotationButton.addEventListener("click", annotationField.saveAnnotationsClicked.bind(annotationField));
+  annotationField.elements.annotationButton.addEventListener("click", annotationField.saveAnnotationsClicked.bind(annotationField));
 }
 
 class AnnotationManager extends Observable {
@@ -39,23 +41,16 @@ class AnnotationManager extends Observable {
   }
 
   saveAnnotationsClicked() {
-    if(document.getElementById("annotation").value!=0 && currentT != ""){
-        annoText= currentT + " : " + document.getElementById("annotation").value+"\n";
-
-        //löschen??
-        allAnnos.push(annoText);
-
-        //löschen??
-        var comment = allAnnos.join("\r\n");
+    if(this.elements.annotationContent.value!=0 && currentT != ""){
+        annoText= currentT +  " : " + this.elements.annotationContent.value+"\n";
         this.createNewComment(annoText);
-        document.getElementById('anmerkungFail').innerHTML = "Anmerkung gespeichert."
-        // comment = '';
-        document.getElementById("annotation").value = '';
+        this.elements.annotationFail.innerHTML = "Anmerkung gespeichert."
+        this.elements.annotationContent.value = '';
     } else {
-        if(document.getElementById("annotation").value==0){
-          document.getElementById('anmerkungFail').innerHTML = "Anmerkung einfügen!"
+        if(this.elements.annotationContent.value==0){
+          this.elements.annotationFail.innerHTML = "Anmerkung einfügen!"
         } else {
-          document.getElementById('anmerkungFail').innerHTML = "Zeitangabe fehlt."
+          this.elements.annotationFail.innerHTML = "Zeitangabe fehlt."
         }
      }
    }
