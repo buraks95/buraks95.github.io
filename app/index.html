@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<script type="text/javascript" src="resources/lib/jszip.js"></script>
+<script type="text/javascript" src="resources/lib/FileSaver.js"></script>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MME</title>
+    <link rel="stylesheet" href="resources/css/style.css">
+    <link rel="stylesheet" href='https://use.fontawesome.com/releases/v5.0.1/css/all.css?ver=4.9.1'>
+</head>
+
+<body>
+
+    <h1>Rec 'n' Sort</h1>
+
+
+        <div class="recorder">
+              <div class="recordText">Drücke auf das Mikrofon um die Aufnahme zu staten</div>
+
+          <div class="recordBox">
+            <!-- <img class="microfon" src="resources/icons/microfon.png"> -->
+            <i class="fas fa-microphone fa-9x microfon"></i>
+          </div>
+           <div class="controls">
+             <i class="far fa-pause-circle fa-5x pause button"></i>
+             <i class="far fa-stop-circle fa-5x stop button"></i>
+             <!-- <i class="fas fa-microphone-slash fa-5x continue button"></i> -->
+
+             <div class ="player">
+              <audio data-role="audio"  id=recordedAudio> type="audio/mpeg"</audio>
+
+             </div>
+
+             <div class="annotationField">
+             <div class="annotationInput">
+               <p id="timeOutput">Zeit auswählen</p>
+               <input id="annotation" type="annotation" placeholder="Anmerkung" name="annotation" size="40" maxlength="1000">
+               <button type="button" id = "saveAnnotations" class="saveAnnotation">Speichern</button>
+               <p id="anmerkungFail"></p>
+             </div>
+
+             </div>
+
+             <div id="divAudioList" class="audio-list"></div>
+
+           </div>
+         </div>
+
+         <div class="dataInputField">
+           <div class="dataInput">
+
+             <div class="metaDataInput">
+               <div class="inputAreas">
+                 <input id="conductor" type="conductor" placeholder="Leiter Interview" name="conductor" size="50" maxlength="100">
+                 <input id="partner" type="partner" placeholder="Partner Interview" name="partner" size="50" maxlength="100">
+                 <input id="room" type="room" placeholder="Raum" name="room" size="50" maxlength="100">
+                 <input id="keywords" type="keywords" placeholder="Schlagwörter" name="keywords" size="50" maxlength="100" rows="4"></div>
+
+             </div>
+
+             <div class="notesInput">
+              <div>Weitere Notizen:</div>
+              <textarea id="notes-input" type="notes"  name="notes" cols="34" maxlength="3000" rows="2"></textarea>
+              <!-- <textarea id="notes-input" rows="4" cols="40" maxlength="3000"></textarea> -->
+             </div>
+              <p id="comments"></p>
+              <div class ="zipNameInput">
+                <p id="showDate"></p>
+                <input id="dateiname" type="dateiname" placeholder="Dateiname ersetzen?" name="dateiname">
+              </div>
+
+           </div>
+           <div class="btnBox">
+            <div class="button deleteRec disabled" id = deleteButton>
+             <i class="fas fa-trash fa-lg icon"></i>
+            </div>
+            <div class="button saveRec disabled" id = saveButton>
+              <i class="fas fa-save fa-3x icon"></i>
+            </div>
+           </div>
+
+         </div>
+
+
+       <dialog id ="dialog" role="dialog" aria-labelledby="dialog-heading">
+           <p id="dialog-text"></p>
+           <button id="confirm-dialog">Aufnahme stoppen</button>
+           <button id="close-dialog">Schließen</button>
+
+       </dialog>
+
+<script type="module" src="resources/js/index.js"></script>
+
+
+</body>
+
+<footer></footer>
+
+
+</html>
