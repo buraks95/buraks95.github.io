@@ -3,7 +3,6 @@ import DownloadManager from "./Managers/DownloadManager.js";
 
 function ManageAudioList() {
   this.firstAudio = [];
-      var dataName = datum;
 
 
   this.add = (src) => {
@@ -40,6 +39,8 @@ function ManageAudioList() {
     } else{
       dataName = datum;
     }
+     var dataName = datum;
+
 
     let div = document.createElement("div");
     let audio = document.createElement("audio");
