@@ -1,7 +1,7 @@
 import { Event, Observable } from "../Observable.js";
 
-function initDownloadManager(dataInputField){
 
+function initDownloadManager(dataInputField){
   dataInputField.btnBox = {
   downloadButton: dataInputField.el.querySelector(".saveRec")
   }
@@ -50,7 +50,8 @@ class DownloadManager extends Observable {
     notesString = notesString.replace(/\n/g, "\r\n");
     zip.file(dataName + " - notes.txt", notesString);
 
-    var xhr = new XMLHttpRequest(); 
+
+    var xhr = new XMLHttpRequest();
     xhr.open('GET', recordedAudio.src, true);
     xhr.responseType = 'blob';
     xhr.onload = function(e) {

@@ -1,5 +1,3 @@
-
-
 function initControlsView(controls){
   console.log(controls);
   controls.stopButton.style.visibility='hidden';

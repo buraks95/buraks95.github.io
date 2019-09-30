@@ -20,7 +20,6 @@ class Dialog {
     confirmButton.innerHTML= this.confirmButtonText;
 
     if (!container.hasAttribute('open')) {
-      // show the dialog
       container.setAttribute('open','open');
       // after displaying the dialog, focus the closebutton inside it
       //closebutton.focus();

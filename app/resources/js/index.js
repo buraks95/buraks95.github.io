@@ -24,20 +24,19 @@ function initButtons() {
 	initDeleteRec();
 }
 
-function initDownload() {
-	console.log("init download");
-	let downloadStarter = document.querySelector(".dataInputField");
-	downloadManager = new DownloadManager (downloadStarter);
-}
-
 function initAudioList() {
-	console.log("init Audio List");
 	audioList = new ManageAudioList();
 }
 
+function initDownload() {
+	let downloadStarter = document.querySelector(".dataInputField");
+	downloadManager = new DownloadManager(downloadStarter);
+}
+
+
+
 
 function initRecorder() {
-	console.log("init recorder");
 	let audioElement = document.querySelector(".recorder");
 	audioRecorder = new AudioRecorder(audioElement, showAnnotationField, audioList);
 }
