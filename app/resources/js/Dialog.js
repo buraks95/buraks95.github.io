@@ -1,35 +1,34 @@
 
 
 class Dialog {
-  constructor(dialogText, confirmButtonText, callback) {
+  constructor(dialogText, confirmButtonText) {
       this.dialogText = dialogText;
       this.confirmButtonText = confirmButtonText;
-
+      console.log(dialogText);
   }
 
-
+// To-Do: controls extrahieren
   toggleDialog(callback){
+    var dialog = document.querySelector('dialog'),
+      dialogText = document.getElementById('dialog-text'),
+      closebutton = document.getElementById('close-dialog'),
+      confirmButton = document.getElementById('confirm-dialog'),
+      pagebackground = document.querySelector('body');
 
-    var container = document.querySelector('dialog'),
-    dialogTextEl = document.getElementById('dialog-text'),
-    pagebackground = document.querySelector('body'),
-    closebutton = document.getElementById('close-dialog'),
-    confirmButton = document.getElementById('confirm-dialog');
-
-    dialogTextEl.innerHTML = this.dialogText;
+    console.log(dialog);
+    dialogText.innerHTML = this.dialogText;
     confirmButton.innerHTML= this.confirmButtonText;
 
-    if (!container.hasAttribute('open')) {
+    if (!dialog.hasAttribute('open')) {
       // show the dialog
-      container.setAttribute('open','open');
+      dialog.setAttribute('open','open');
       // after displaying the dialog, focus the closebutton inside it
       //closebutton.focus();
-
-      closebutton.onclick = this.toggleDialog;
-      confirmButton.onclick = ()=>{
-      this.toggleDialog();
-      callback()
-      }
+      console.log(callback);
+      closebutton.addEventListener('click', this.toggleDialog.bind(callback));
+      //this.closeDialog.bind(dialog)
+      confirmButton.addEventListener('click', callback);
+      confirmButton.addEventListener('click', this.toggleDialog.bind(callback));
 
       var div = document.createElement('div');
 		  div.id = 'backdrop';
